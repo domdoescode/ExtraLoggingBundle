@@ -16,7 +16,7 @@ Add the following lines to your ``deps`` file:
 
 ```
 [DomUdallExtraLoggingBundle]
-    git=http://github.com/domudall/ExtraLoggingBundle.git
+    git=https://github.com/domudall/ExtraLoggingBundle.git
     target=bundles/DomUdall/ExtraLoggingBundle
 ```
 
