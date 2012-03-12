@@ -11,8 +11,14 @@ class UserProcessor
      */
     protected $container;
 
+    /**
+     * @var AdvancedUserInterface
+     */
     protected $user;
 
+    /**
+     * @var Array
+     */
     protected $record = array();
 
     public function __construct(ContainerInterface $container)
@@ -20,6 +26,12 @@ class UserProcessor
         $this->container = $container;
     }
 
+    /**
+     * Adds the basic user information from the AdvancedUser class.
+     *
+     * @param Array $record Current log record
+     * @return Array $record Log record with additional data
+     */
     public function __invoke(array $record)
     {
         if (null === $this->user) {
@@ -40,6 +52,9 @@ class UserProcessor
         return array_merge($record, $this->record);
     }
 
+    /**
+     * Allows user to extend and add their own application-specific record data.
+     */
     public function setAdditionalFields()
     {
     }

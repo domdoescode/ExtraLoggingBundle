@@ -11,6 +11,9 @@ class RequestProcessor
      */
     protected $container;
 
+    /**
+     * @var Request
+     */
     protected $request;
 
     public function __construct(ContainerInterface $container)
@@ -18,6 +21,12 @@ class RequestProcessor
         $this->container = $container;
     }
 
+    /**
+     * Adds request-base data retrieved from Symfony2's Request service to the log record.
+     *
+     * @param Array $record Current log record
+     * @return Array $record Log record with additional data
+     */
     public function __invoke(array $record)
     {
         if (null === $this->request) {
