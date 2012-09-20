@@ -3,6 +3,7 @@
 namespace DomUdall\ExtraLoggingBundle\Processor;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
 class RequestProcessor
 {
@@ -29,17 +30,21 @@ class RequestProcessor
      */
     public function __invoke(array $record)
     {
-        if (null === $this->request) {
-            $this->request = $this->container->get("request");
+        try {
+            if (null === $this->request) {
+                $this->request = $this->container->get("request");
+            }
+    
+            $record['request']['base_url'] = $this->request->getBaseUrl();
+            $record['request']['scheme'] = $this->request->getScheme();
+            $record['request']['port'] = $this->request->getPort();
+            $record['request']['request_uri'] = $this->request->getRequestUri();
+            $record['request']['uri'] = $this->request->getUri();
+            $record['request']['query_string'] = $this->request->getQueryString();
+            $record['request']['_route'] = $this->request->get("_route");
+        } catch (InactiveScopeException $e) {
+            // This stops errors occuring in the CLI
         }
-
-        $record['request']['base_url'] = $this->request->getBaseUrl();
-        $record['request']['scheme'] = $this->request->getScheme();
-        $record['request']['port'] = $this->request->getPort();
-        $record['request']['request_uri'] = $this->request->getRequestUri();
-        $record['request']['uri'] = $this->request->getUri();
-        $record['request']['query_string'] = $this->request->getQueryString();
-        $record['request']['_route'] = $this->request->get("_route");
 
         return $record;
     }
